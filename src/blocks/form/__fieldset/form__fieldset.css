@@ -1,0 +1,12 @@
+.form__fieldset {
+  border: none;
+  max-width: 358px;
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 580px) {
+  .form__fieldset {
+    max-width: 260px;
+  }
+}

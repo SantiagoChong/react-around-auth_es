@@ -1,0 +1,10 @@
+.popup__container_infoTooltip {
+  justify-content: flex-start;
+}
+
+@media screen and (max-width: 580px) {
+  .popup__container_infoTooltip {
+    width: 280px;
+    height: 308px;
+  }
+}
