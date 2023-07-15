@@ -6,7 +6,7 @@ import InfoTooltip from "./InfoTooltip";
 const Login = ({handleLogin}) => {
   const navigate = useNavigate();
   const [values, setValues] = useState({});
-  const [infoToolOpen, setInfoToolOpen] = useState(null);
+  const [infoToolOpen, setInfoToolOpen] = useState(false);
   const [error, setError] = useState(false);
 
   const handleChange = (e) => {
@@ -32,10 +32,10 @@ const Login = ({handleLogin}) => {
         }
       })
       .catch((err) => {
-        setInfoToolOpen(true);
         setError(true);
         console.log(err);
       });
+    setInfoToolOpen(true);
   };
 
   return (

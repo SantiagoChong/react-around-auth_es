@@ -27,7 +27,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
   const navigate = useNavigate;
 
@@ -127,7 +127,7 @@ function App() {
           .then((res) => {
             if (res.data) {
               setEmail(res.data.email);
-              setLoggedIn(true);
+              setIsLoggedIn(true);
               navigate("/");
             }
           })
@@ -137,15 +137,15 @@ function App() {
       }
     };
     handleTokenCheck();
-  }, [loggedIn, navigate]);
+  }, [isLoggedIn, navigate]);
 
   function handleLogin() {
-    setLoggedIn(true);
+    setIsLoggedIn(true);
   }
 
   function handleSignOut() {
     localStorage.removeItem("jwt");
-    setLoggedIn(false);
+    setIsLoggedIn(false);
     setEmail("");
   }
 
@@ -159,7 +159,7 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute loggedIn={loggedIn}>
+              <ProtectedRoute loggedIn={isLoggedIn}>
                 <Main
                   onEditProfile={onEditProfileClick}
                   onEditAvatar={onEditAvatarClick}

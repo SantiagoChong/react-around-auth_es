@@ -12,6 +12,7 @@ const Register = () => {
   const handleChange = (e) => {
     const {name, value} = e.target;
     setValues({...values, [name]: value});
+    console.log(values);
   };
 
   const handleCloseInfoTool = () => {
@@ -77,7 +78,7 @@ const Register = () => {
           ¿Ya eres miembro? Inicia sesión aquí
         </Link>
       </form>
-      <InfoTooltip error={error} infoToolOpen={infoToolOpen} handleClose={handleCloseInfoTool}></InfoTooltip>
+      <InfoTooltip isOpen={infoToolOpen} onClose={handleCloseInfoTool} error={error} />
     </>
   );
 };
