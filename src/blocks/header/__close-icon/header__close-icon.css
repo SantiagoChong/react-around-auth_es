@@ -1,0 +1,9 @@
+.header__close-icon {
+  max-width: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding-right: 30px;
+}
+.header__close-icon:hover {
+  opacity: 0.6;
+}

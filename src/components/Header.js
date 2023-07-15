@@ -4,7 +4,7 @@ import {Link, useMatch} from "react-router-dom";
 import burgerMenu from "../images/burger-menu.svg";
 import closeButton from "../images/close-icon.svg";
 
-export default function Header({handleSignOut, email}) {
+const Header = ({handleSignOut, email}) => {
   const [open, setOpen] = useState(false);
 
   function handleMenu() {
@@ -18,7 +18,7 @@ export default function Header({handleSignOut, email}) {
 
   return (
     <>
-      <header className="header">
+      <header className={`header ${open && "header_opened"}`}>
         <div className="header__container">
           <img className="logo" src={logo} alt="logo" />
           {useMatch("/signup") && (
@@ -48,8 +48,9 @@ export default function Header({handleSignOut, email}) {
             </>
           )}
         </div>
-        <div className="header__line"></div>
       </header>
     </>
   );
-}
+};
+
+export default Header;

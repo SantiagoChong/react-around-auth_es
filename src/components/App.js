@@ -15,7 +15,7 @@ import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import * as auth from "../utils/auth";
 import InfoTooltip from "./InfoTooltip";
-import {Route, Navigate, Routes} from "react-router-dom";
+import {Route, Routes, Navigate, useNavigate} from "react-router-dom";
 
 function App() {
   const [isEditProfilePopUpOpen, setIsEditProfilePopUpOpen] = useState(false);
@@ -29,6 +29,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
+  const navigate = useNavigate;
 
   useEffect(() => {
     api.getProfileInfo().then((data) => {
@@ -118,15 +119,16 @@ function App() {
   }
 
   useEffect(() => {
-    const handleCheckToken = () => {
+    const handleTokenCheck = () => {
       if (localStorage.getItem("jwt")) {
-        const token = localStorage.getItem("jwt");
+        const jwt = localStorage.getItem("jwt");
         auth
-          .checkToken(token)
+          .checkToken(jwt)
           .then((res) => {
             if (res.data) {
               setEmail(res.data.email);
               setLoggedIn(true);
+              navigate("/");
             }
           })
           .catch((err) => {
@@ -134,42 +136,43 @@ function App() {
           });
       }
     };
-    handleCheckToken();
-  });
+    handleTokenCheck();
+  }, [loggedIn, navigate]);
 
   function handleLogin() {
     setLoggedIn(true);
   }
 
   function handleSignOut() {
+    localStorage.removeItem("jwt");
     setLoggedIn(false);
     setEmail("");
-    localStorage.removeItem("jwt");
   }
 
   return (
     <div className="root">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header btnText="Sign up" handleLogout={handleSignOut} email={email} />
+        <Header handleSignOut={handleSignOut} email={email} />
         <Routes>
-          <Route path="/signin" element={<Login handleLogin={handleLogin} />}></Route>
-          <Route path="/signup" element={<Register />}></Route>
-          <Route path="/" element={<ProtectedRoute loggedIn={loggedIn} />} />
-          <Route path="*" element={<Navigate to="/signup" />} />
+          <Route exact path="/signin" element={<Login handleLogin={handleLogin} />}></Route>
+          <Route exact path="/signup" element={<Register />}></Route>
           <Route
             path="/"
             element={
-              <Main
-                onEditProfile={onEditProfileClick}
-                onEditAvatar={onEditAvatarClick}
-                onAddPlace={onAddPlaceClick}
-                onCardClick={handleCardClick}
-                onCardLike={handleCardLike}
-                onDeleteCard={onDeleteCardClick}
-                cards={cards}
-              />
+              <ProtectedRoute loggedIn={loggedIn}>
+                <Main
+                  onEditProfile={onEditProfileClick}
+                  onEditAvatar={onEditAvatarClick}
+                  onAddPlace={onAddPlaceClick}
+                  onCardClick={handleCardClick}
+                  onCardLike={handleCardLike}
+                  onDeleteCard={onDeleteCardClick}
+                  cards={cards}
+                />
+              </ProtectedRoute>
             }
           />
+          <Route path="*" element={<Navigate to="/signup" />} />
         </Routes>
         <Footer />
         <EditProfilePopup

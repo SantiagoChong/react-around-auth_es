@@ -3,14 +3,11 @@ import * as auth from "../utils/auth";
 import {Link, useNavigate} from "react-router-dom";
 import InfoTooltip from "./InfoTooltip";
 
-export default function Login(props) {
-  const history = useNavigate();
-  const [values, setValues] = useState({
-    email: "",
-    password: "",
-  });
-  const [infoToolOpen, setInfoToolOpen] = React.useState(null);
+const Login = ({handleLogin}) => {
   const navigate = useNavigate();
+  const [values, setValues] = useState({});
+  const [infoToolOpen, setInfoToolOpen] = useState(null);
+  const [error, setError] = useState(false);
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -20,22 +17,23 @@ export default function Login(props) {
 
   const handleCloseInfoTool = () => {
     setInfoToolOpen(false);
-    history("/signin", {state: {}});
+    navigate("/signin", {state: {}});
   };
 
   const onLogin = (e) => {
     e.preventDefault();
     auth
-      .authorize({values})
+      .authorize(values)
       .then((data) => {
-        if (data.token) {
+        if (data) {
+          setValues({email: "", pasword: ""});
           navigate("/");
-          props.handleLogin();
+          handleLogin();
         }
       })
       .catch((err) => {
-        navigate("/signin", {state: {error: err}});
-        props.handleLogin();
+        setInfoToolOpen(true);
+        setError(true);
         console.log(err);
       });
   };
@@ -54,7 +52,6 @@ export default function Login(props) {
             required
             minLength="2"
             maxLength="40"
-            value={values.email}
             onChange={handleChange}
           />
           <span className="name-error popup__item-error"></span>
@@ -68,7 +65,6 @@ export default function Login(props) {
             required
             minLength="2"
             maxLength="40"
-            value={values.password}
             onChange={handleChange}
           />
           <span className="description-error form__item-error"></span>
@@ -80,7 +76,9 @@ export default function Login(props) {
           ¿Aún no eres miembro? Regístrate aquí
         </Link>
       </form>
-      <InfoTooltip error={true} isOpen={infoToolOpen} onClose={handleCloseInfoTool}></InfoTooltip>
+      <InfoTooltip error={error} infoToolOpen={infoToolOpen} handleClose={handleCloseInfoTool}></InfoTooltip>
     </>
   );
-}
+};
+
+export default Login;
