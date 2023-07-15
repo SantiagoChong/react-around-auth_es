@@ -76,7 +76,7 @@ const Login = ({handleLogin}) => {
           ¿Aún no eres miembro? Regístrate aquí
         </Link>
       </form>
-      <InfoTooltip error={error} infoToolOpen={infoToolOpen} handleClose={handleCloseInfoTool}></InfoTooltip>
+      <InfoTooltip error={error} isOpen={infoToolOpen} onClose={handleCloseInfoTool}></InfoTooltip>
     </>
   );
 };
