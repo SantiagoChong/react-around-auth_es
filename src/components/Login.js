@@ -26,16 +26,18 @@ const Login = ({handleLogin}) => {
       .authorize(values)
       .then((data) => {
         if (data) {
+          setInfoToolOpen(true);
           setValues({email: "", pasword: ""});
           navigate("/");
           handleLogin();
+        } else {
+          setError(true);
+          setInfoToolOpen(true);
         }
       })
       .catch((err) => {
-        setError(true);
         console.log(err);
       });
-    setInfoToolOpen(true);
   };
 
   return (

@@ -9,9 +9,15 @@ export const register = ({email, password}) => {
     },
     body: JSON.stringify({email, password}),
   })
-    .then((res) => res.json())
-    .then((data) => console.log(data))
-    .catch((err) => console.log(err));
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export const authorize = ({email, password}) => {
@@ -23,14 +29,19 @@ export const authorize = ({email, password}) => {
     },
     body: JSON.stringify({email, password}),
   })
-    .then((res) => res.json())
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    })
     .then((data) => {
       if (data.token) {
         localStorage.setItem("jwt", data.token);
         return data;
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err, "cachando error"));
 };
 
 export const checkToken = (token) => {
@@ -42,6 +53,13 @@ export const checkToken = (token) => {
       Authorization: `Bearer ${token}`,
     },
   })
-    .then((res) => res.json())
-    .catch((err) => console.log(err));
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
