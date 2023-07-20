@@ -42,9 +42,7 @@ export default function Main(props) {
                     onCardLike={props.onCardLike}
                     onDeleteCard={props.onDeleteCard}
                   />
-                ) : (
-                  <> </>
-                );
+                ) : null;
               return _card;
             })}
           </div>

@@ -29,7 +29,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   useEffect(() => {
     api.getProfileInfo().then((data) => {
